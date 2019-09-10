@@ -116,7 +116,7 @@ if __name__ == '__main__':
     # Задаём параметры работы скрипта
     DRIVER = webdriver.Chrome()
     URL = 'https://rozetka.com.ua/'
-    CSS_SEARCH_FIELD = 'input.rz-header-search-input-text'
+    CSS_SEARCH_FIELD = 'input.search-form__input'
     CSS_ITEMS = 'div.g-i-tile-i-title > a'
     CSS_MORE_BUTTON = 'a.g-i-more-link'
 
