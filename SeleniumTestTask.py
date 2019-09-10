@@ -36,35 +36,35 @@ def random_sleep():
 
 def interaction_with(selector, clickable=False, scroll=False, click=False):
     """ Функция взаимодействия с элементомами. Возвращает запрошенные элементы """
-    try:
-        # Дожидаемся появления элемента на странице
-        elems = WebDriverWait(DRIVER, 10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, selector)))
+    #try:
+    # Дожидаемся появления элемента на странице
+    elems = WebDriverWait(DRIVER, 10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, selector)))
 
-        # Проверяем сколько элементов обнаружено
-        if len(elems) > 1:
-            # Если найдена группа элементов, то просто возвращаем их
-            return elems
-        else:
-            # Иначе - начинаем взаимодействие
-            elem = elems[0]
+    # Проверяем сколько элементов обнаружено
+    if len(elems) > 1:
+        # Если найдена группа элементов, то просто возвращаем их
+        return elems
+    else:
+        # Иначе - начинаем взаимодействие
+        elem = elems[0]
 
-        if clickable:
-            # Дожидаемся кликабельности элемента
-            WebDriverWait(DRIVER, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, selector)))
+    if clickable:
+        # Дожидаемся кликабельности элемента
+        WebDriverWait(DRIVER, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, selector)))
 
-        if scroll:
-            # Скроллим элемент в пределы видимости:
-            elem.location_once_scrolled_into_view
+    if scroll:
+        # Скроллим элемент в пределы видимости:
+        elem.location_once_scrolled_into_view
 
-        if click:
-            # Нажимаем на элемент
-            elem.click()
+    if click:
+        # Нажимаем на элемент
+        elem.click()
 
-        return elem
+    return elem
 
-    except Exception as Error:
-        print(f"ОШИБКА: {Error}. Повтор...")
-        return interaction_with(selector, clickable, scroll, click)
+    #except Exception as Error:
+    #    print(f"ОШИБКА: {Error}. Повтор...")
+    #    return interaction_with(selector, clickable, scroll, click)
 
 
 def prepare():
