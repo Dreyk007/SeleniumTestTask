@@ -36,7 +36,7 @@ def random_sleep():
 
 def interaction_with(selector, clickable=False, scroll=False, click=False):
     """ Функция взаимодействия с элементомами. Возвращает запрошенные элементы """
-    #try:
+    # try:
     # Дожидаемся появления элемента на странице
     elems = WebDriverWait(DRIVER, 10).until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, selector)))
 
@@ -62,7 +62,7 @@ def interaction_with(selector, clickable=False, scroll=False, click=False):
 
     return elem
 
-    #except Exception as Error:
+    # except Exception as Error:
     #    print(f"ОШИБКА: {Error}. Повтор...")
     #    return interaction_with(selector, clickable, scroll, click)
 
@@ -94,14 +94,21 @@ def main():
     # Сохраняем список с элементами товаров
     item_elems = interaction_with(CSS_ITEMS)
 
-    # В цикле находим названия производителей и добавляем в список
+    # В цикле находим названия производителей и добавляем в список + считаем упоминание заданного слова в названиях
+    word_count = 0
     item_manufacturers = []
     for elem in item_elems:
-        manufacturer = re.findall(MANUFACTURER_PATTERN, elem.text)
+        elem_text = elem.text
+        manufacturer = re.findall(MANUFACTURER_PATTERN, elem_text)
+
+        if PHRASE_FOR_COUNT in elem_text:
+            word_count += 1
+
         if manufacturer:
             item_manufacturers.append(manufacturer[0])
 
     # Считаем количество повторов в списке и выводим на экран
+    print(f'\nResults with word "{PHRASE_FOR_COUNT}": {word_count}')
     print(f'\nTV by trademark on first {PAGES_TO_LOAD + 1} pages:')
     for item_manufacturer in set(item_manufacturers):
         print(f'{item_manufacturer} = {item_manufacturers.count(item_manufacturer)}')
@@ -123,6 +130,7 @@ if __name__ == '__main__':
     MANUFACTURER_PATTERN = re.compile(r'^Телевизор ([\w\.-]+) [\w\.\s-]+')
     RANDOM_SLEEP_RANGE = (0.1, 1.6)
     PHRASE = 'Телевизор 26'
+    PHRASE_FOR_COUNT = 'Телевизор'
     PAGES_TO_LOAD = args.pages_to_load
 
     # Запуск
